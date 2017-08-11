@@ -1,0 +1,8 @@
+Hi ${headers.firstName},
+
+This is Test Message 
+
+${body}
+
+Regards
+Apache Camel

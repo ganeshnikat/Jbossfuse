@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean class="com.nttdata.techpro.splitter.FileFilter" id="myFilter"/>
+    <bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemqsplitter">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+        <property name="userName" value="admin"/>
+        <property name="password" value="admin"/>
+    </bean>
+    <camelContext id="camelContext-beeac545-7c63-443c-80d1-0d0f653abaec"
+        trace="false" xmlns="http://camel.apache.org/schema/spring">
+        <propertyPlaceholder id="properties" location="splitter.properties"/>
+        <route id="_route3">
+            <from id="_from1" uri="file:{{splitter.inputFolder}}?filter=#myFilter"/>
+            <log id="filename" message="${file:name}"/>
+            <split id="_split1">
+                <tokenize token="item" xml="true"/>
+                <to id="_to2" uri="activemqsplitter:queue:splittedToken"/>
+                <log id="filename1" message="Placed files in Active MQ"/>
+            </split>
+            <log id="filename" message="File Processed successfully"/>
+        </route>
+        <route id="_process_Item_FromQ">
+            <from id="_items_Q" uri="activemqsplitter:queue:splittedToken"/>
+            <log id="filename11" message="taking items from Active MQ ${file:name}"/>
+            <log id="filenames" message="taking items from Active MQ ${body}"/>
+            <to id="_to_output_dir" uri="file:{{splitter.outputFolder}}?fileName=${file:name.noext}-${date:now:yyyyMMdd-HHmmss}.${file:ext}"/>
+        </route>
+    </camelContext>
+</beans>

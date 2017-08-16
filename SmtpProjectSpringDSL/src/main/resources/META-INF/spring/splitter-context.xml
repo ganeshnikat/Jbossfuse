@@ -22,10 +22,11 @@
             <log id="filename" message="File Processed successfully"/>
         </route>
         <route id="_process_Item_FromQ">
-            <from id="_items_Q" uri="activemqsplitter:queue:splittedToken"/>
-            <log id="filename11" message="taking items from Active MQ ${file:name}"/>
-            <log id="filenames" message="taking items from Active MQ ${body}"/>
-            <to id="_to_output_dir" uri="file:{{splitter.outputFolder}}?fileName=${file:name.noext}-${date:now:yyyyMMdd-HHmmss}.${file:ext}"/>
+           <from id="_items_Q" uri="activemqsplitter:queue:splittedToken"/> 
+            <camel:setHeader headerName="fileitemid" id="_setHeader1">
+                <xpath resultType="java.lang.String">/item/@id</xpath>
+            </camel:setHeader>
+            <to id="_to_output_dir" uri="file:{{splitter.outputFolder}}?fileName=${headers.fileitemid}.${file:ext}"/>
         </route>
     </camelContext>
 </beans>

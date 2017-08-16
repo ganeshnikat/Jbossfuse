@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1502717050613
+Bnd-LastModified: 1502876046048
 Build-Jdk: 1.8.0_121
 Built-By: 100351
 Bundle-Description: Empty Camel Spring Example
@@ -9,9 +9,9 @@ Bundle-Name: Empty Camel Spring Example [SmtpProjectSpringDSL]
 Bundle-SymbolicName: SmtpProjectSpringDSL
 Bundle-Version: 1.0.0.SNAPSHOT
 Created-By: Apache Maven Bundle Plugin
-Export-Package: com.nttdata.techpro.splitter;uses:="org.apache.camel.com
- ponent.file";version="1.0.0",com.nttdata.techpro.template;uses:="org.ap
- ache.camel.builder";version="1.0.0"
+Export-Package: com.nttdata.techpro.splitter;version="1.0.0";uses:="org.
+ apache.camel.component.file",com.nttdata.techpro.template;version="1.0.
+ 0";uses:="org.apache.camel.builder"
 Import-Package: org.apache.activemq.camel.component;version="[5.11,6)",o
  rg.apache.camel;version="[2.17,3)",org.apache.camel.builder;version="[2
  .17,3)",org.apache.camel.component.file;version="[2.17,3)",org.apache.c

@@ -28,5 +28,15 @@
             </camel:setHeader>
             <to id="_to_output_dir" uri="file:{{splitter.outputFolder}}?fileName=${headers.fileitemid}.${file:ext}"/>
         </route>
+        <!-- <route id="_process_files_from_directory">
+         <from id="_from1" uri="file:{{splitter.inputFolder}}?filter=#myFilter"/>
+        	<split id="_split1">
+                <tokenize token="item" xml="true"/>
+                <camel:setHeader headerName="fileitemid" id="_setHeader1">
+                	<xpath resultType="java.lang.String">/item/@id</xpath>
+            	</camel:setHeader>
+            	<to id="_to_output_dir" uri="file:{{splitter.outputFolder}}?fileName=${headers.fileitemid}.${file:ext}"/>
+            </split>
+        </route> -->
     </camelContext>
 </beans>

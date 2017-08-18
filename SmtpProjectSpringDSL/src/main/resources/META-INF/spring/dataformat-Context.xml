@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+	<bean class="org.apache.activemq.camel.component.ActiveMQComponent"
+		id="activemqdataformat">
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+	<camelContext id="camelContext-c225f16e-f853-40ba-b69d-e321e8e38fcf"
+		trace="false" xmlns="http://camel.apache.org/schema/spring">
+		<propertyPlaceholder id="properties" location="dataformat.properties" />
+		<dataFormats>
+          <bindy id="bindyDataformat" type="Csv" classType="org.apache.camel.bindy.model.Order"/>
+        </dataFormats>
+		<route id="_route4">
+			<from id="_from1" uri="file:{{dataformat.inputFolder}}?noop=true" />
+			<unmarshal id="_unmarshal1" ref="bindyDataformat" />
+			<log id="_log1" message="File Processing started from input to Q " />
+			<to id="_to1" uri="bean:csv" />
+			<to id="_to2" uri="activemqdataformat:queue:dataformatQ" />
+		</route>
+		<route id="_route5">
+			<from id="_from2" uri="activemqdataformat:queue:dataformatQ" />
+			<marshal id="_marshal1" ref="bindyDataformat" />
+			<to id="_to3" uri="file:{{dataformat.outputFolder}}" />
+		</route>
+	</camelContext>
+</beans>

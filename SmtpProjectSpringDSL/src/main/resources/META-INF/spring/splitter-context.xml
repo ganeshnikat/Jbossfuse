@@ -11,7 +11,7 @@
     <camelContext id="camelContext-beeac545-7c63-443c-80d1-0d0f653abaec"
         trace="false" xmlns="http://camel.apache.org/schema/spring">
         <propertyPlaceholder id="properties" location="splitter.properties"/>
-        <route id="_route3">
+        <route id="_XML_Splitter">
             <from id="_from1" uri="file:{{splitter.inputFolder}}?filter=#myFilter"/>
             <log id="filename" message="${file:name}"/>
             <split id="_split1">
@@ -21,7 +21,7 @@
             </split>
             <log id="filename" message="File Processed successfully"/>
         </route>
-        <route id="_process_Item_FromQ">
+        <route id="_Process_Item_FromQ">
             <from id="_items_Q" uri="activemqsplitter:queue:splittedToken"/>
             <camel:setHeader headerName="fileitemid" id="_setHeader1">
                 <xpath resultType="java.lang.String">/item/@id</xpath>

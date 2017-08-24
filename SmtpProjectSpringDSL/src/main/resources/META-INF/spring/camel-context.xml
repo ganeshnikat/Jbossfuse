@@ -21,7 +21,7 @@
     <camelContext id="_camelContext1" xmlns="http://camel.apache.org/schema/spring">
         <propertyPlaceholder id="properties" location="mail.properties"/>
         <!-- <routeBuilder ref="VelocityTemplate"/> -->
-        <route id="_route1">
+        <route id="_Valid_Invalid_Filescheck">
             <from id="_from1" uri="file:{{inputFolder}}"/>
             <log id="_log1" message="file  processing  stared"/>
             <choice id="_choice1">
@@ -39,13 +39,13 @@
                 </otherwise>
             </choice>
         </route>
-        <route id="_route2">
+        <route id="_Rename_Valid_Files">
             <from id="_to2" uri="activemq:queue:training"/>
             <log id="_log6" message="Renaming ${file:name} $ valid file from Q"/>
             <to id="_to_Rename_Files" uri="file:{{renamedValidFiles}}?fileName=${file:name.noext}-${date:now:yyyyMMdd-HHmmss}.${file:ext}"/>
             <log id="_log7" message="File Renamed Successfully"/>
         </route>
-        <route id="_send_mail">
+        <route id="_Send_Mail">
             <from id="_mailfrom" uri="file:{{invalidFilesFolder}}"/>
             <log id="_log116" message="Reading Invalid files from Q"/>
             <setHeader headerName="to" id="_setHeader1">

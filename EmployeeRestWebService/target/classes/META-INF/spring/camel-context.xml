@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="       http://www.springframework.org/schema/beans      http://www.springframework.org/schema/beans/spring-beans.xsd       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd             http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <cxf:rsServer address="http://localhost:6464/employeeservice" id="employeeServer">
+        <cxf:serviceBeans>
+            <ref bean="employeeServices"/>
+        </cxf:serviceBeans>
+        <cxf:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </cxf:providers>
+    </cxf:rsServer>
+    <bean class="com.techpro.services.EmployeeRestProcessor" id="employeeRestProcessor"/>
+    <bean class="com.techpro.services.EmployeeServices" id="employeeServices"/>
+    <camelContext id="_camelContext1" xmlns="http://camel.apache.org/schema/spring">
+        <route id="_route1">
+            <from id="_from1" uri="cxfrs:bean:employeeServer"/>
+            <setExchangePattern id="_setExchangePattern1" pattern="InOut"/>
+            <process id="_process1" ref="employeeRestProcessor"/>
+            <to id="_to1" uri="sql:query"/>
+        </route>
+    </camelContext>
+</beans>
